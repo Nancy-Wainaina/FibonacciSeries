@@ -1,11 +1,10 @@
 package com.example.fibonacciseries
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fibonacciseries.databinding.ActivityMainBinding
+import com.example.recycleview2.NumbersRecycleViewAdapter
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -13,29 +12,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val numbers = findFinabonacci(100)
+        binding.rvRecycleView.layoutManager = LinearLayoutManager(this)
 
-        val fibonacciSeriesGenerator= FibonacciSeriesGenerator()
-        val fibonacciSeries = fibonacciSeriesGenerator.generateFibonacciSeries(100)
-        binding.rvNumbers.layoutManager = LinearLayoutManager(this)
-        val fibonacciAdapter = NumbersRecyclerViewAdapter(fibonacciSeries)
-        binding.rvNumbers.adapter=fibonacciAdapter
+        val numberAdapter=NumbersRecycleViewAdapter(numbers)
+        binding.rvRecycleView.adapter=numberAdapter
+
+
+
     }
-}
 
-class FibonacciSeriesGenerator{
-    fun generateFibonacciSeries(num:Int):List<Int>{
-        val fibonacci = mutableListOf(0,1)
-        var a= 0
-        var b= 1
-        while (fibonacci.size<num){
-            val sum = a+b
-            if (sum <0){
-                break
-            }
-            fibonacci.add(sum)
-            a=b
-            b=sum
+    fun findFinabonacci(n:Int):List<Int>{
+        val number= mutableListOf(0,1)
+        while (number.size<n){
+            number.add(number[number.lastIndex] + number[number.lastIndex-1])
         }
-        return fibonacci
+        return number
     }
 }
